@@ -289,3 +289,18 @@ body {
 		width: 200px;
 	}
 }
+
+.profile > input {
+	margin-right: 10px;
+}
+
+.actions > button {
+	margin-right: 5px;
+	margin-left: 6px;
+	border: none;
+	font-weight: bold;
+	margin-top: 5px;
+	border-color: #00bc77;
+	background-color: #00bc77;
+	color: #fff;
+}

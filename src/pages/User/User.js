@@ -8,6 +8,7 @@ function User() {
 	const [profile, setProfile] = useState('');
 	const [firstName, setfirstName] = useState('');
 	const [lastName, setlastName] = useState('');
+	const [form, setForm] = useState(0);
 
 	useEffect(() => {
 		PostProfile()
@@ -50,14 +51,16 @@ function User() {
 					<h1>
 						Welcome back
 						<br />
-						{profile.firstName} {profile.lastName}!
+						{profile.firstName} {profile.lastName} !
 					</h1>
 					<button
+						style={{ display: form ? 'none' : 'initial' }}
 						className="edit-button"
 						onClick={() => {
 							PostProfile()
 								.then((res) => {
 									setProfile(res.body);
+									setForm(1);
 								})
 								.catch((err) => {
 									console.log(err);
@@ -66,39 +69,44 @@ function User() {
 					>
 						Edit Name
 					</button>
-					<div className="profile">
-						<input
-							type="text"
-							placeholder={profile.firstName}
-							value={firstName}
-							className="firstname"
-							onInput={(e) => {
-								setfirstName(e.target.value);
-							}}
-						/>
-						<input
-							type="text"
-							placeholder={profile.lastName}
-							value={lastName}
-							className="lastname"
-							onInput={(e) => {
-								setlastName(e.target.value);
-							}}
-						/>
-					</div>
-					<div className="actions">
-						<button
-							className="save-button"
-							onClick={() => {
-								PutProfile(firstName, lastName).then(() => {
-									setProfile((profile.firstName = firstName));
-									setProfile((profile.lastName = lastName));
-								});
-							}}
-						>
-							Save
-						</button>
-						<button className="cancel-button">Cancel</button>
+					<div className="form" style={{ display: form ? 'block' : 'none' }}>
+						<div className="profile">
+							<input
+								type="text"
+								placeholder={profile.firstName}
+								value={firstName}
+								className="firstname"
+								onInput={(e) => {
+									setfirstName(e.target.value);
+								}}
+							/>
+							<input
+								type="text"
+								placeholder={profile.lastName}
+								value={lastName}
+								className="lastname"
+								onInput={(e) => {
+									setlastName(e.target.value);
+								}}
+							/>
+						</div>
+						<div className="actions">
+							<button
+								className="save-button"
+								onClick={() => {
+									PutProfile(firstName, lastName).then(() => {
+										setProfile((profile.firstName = firstName));
+										setProfile((profile.lastName = lastName));
+										setForm(0);
+									});
+								}}
+							>
+								Save
+							</button>
+							<button className="cancel-button" onClick={() => setForm(0)}>
+								Cancel
+							</button>
+						</div>
 					</div>
 				</div>
 				<h2 className="sr-only">Accounts</h2>
