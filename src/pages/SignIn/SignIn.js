@@ -1,23 +1,14 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { reqAuth } from '../../services/auth';
 
 function SignInt() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const rememberRef = useRef();
 	const dispatch = useDispatch();
-
-	// useEffect(() => {
-	// 	reqAuth().then((res) => {
-	// 		dispatch.signIn(res.body.token);
-	// 	});
-	// }, []);
-	// console.log(useSelector((state) => state.token));
-	// useSelector((state) => {
-	// 	console.log('State: ', state.token);
-	// });
-
+	const navigate = useNavigate();
 	return (
 		<>
 			<nav className="main-nav">
@@ -61,14 +52,15 @@ function SignInt() {
 							/>
 						</div>
 						<div className="input-remember">
-							<input type="checkbox" id="remember-me" />
+							<input type="checkbox" ref={rememberRef} id="remember-me" />
 							<label for="remember-me">Remember me</label>
 						</div>
 						{/* PLACEHOLDER DUE TO STATIC SITE */}
-						<Link
-							to="/user"
+
+						<button
 							className="sign-in-button"
 							onClick={() => {
+								// console.log(rememberRef.current.checked);
 								reqAuth(username, password)
 									.then((res) => {
 										dispatch({
@@ -77,6 +69,7 @@ function SignInt() {
 												token: res.body.token,
 											},
 										});
+										navigate('/User');
 									})
 									.catch((err) => {
 										console.log(err);
@@ -84,7 +77,7 @@ function SignInt() {
 							}}
 						>
 							Sign In
-						</Link>
+						</button>
 						{/* <!-- SHOULD BE THE BUTTON BELOW --> */}
 						{/* <!-- <button className="sign-in-button">Sign In</button> -->
           <!--  --> */}

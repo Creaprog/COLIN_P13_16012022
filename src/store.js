@@ -1,9 +1,11 @@
 import { createStore } from 'redux';
 import produce from 'immer';
 
+//TODO : stocker les info user dans Redux store
 const initialState = {
-	token: localStorage.getItem('token'),
-	test: 'test',
+	token: localStorage.getItem('token') || null,
+	firstName: '',
+	lastName: '',
 };
 
 export const signIn = (token) => ({

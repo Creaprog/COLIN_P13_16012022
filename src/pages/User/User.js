@@ -18,7 +18,7 @@ function User() {
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [profile]);
+	}, []);
 	return (
 		<>
 			<nav className="main-nav">
@@ -57,14 +57,7 @@ function User() {
 						style={{ display: form ? 'none' : 'initial' }}
 						className="edit-button"
 						onClick={() => {
-							PostProfile()
-								.then((res) => {
-									setProfile(res.body);
-									setForm(1);
-								})
-								.catch((err) => {
-									console.log(err);
-								});
+							setForm(1);
 						}}
 					>
 						Edit Name
@@ -94,11 +87,20 @@ function User() {
 							<button
 								className="save-button"
 								onClick={() => {
-									PutProfile(firstName, lastName).then(() => {
-										setProfile((profile.firstName = firstName));
-										setProfile((profile.lastName = lastName));
-										setForm(0);
-									});
+									return PutProfile(firstName, lastName)
+										.then(() => {
+											setProfile((profile.firstName = firstName));
+											setProfile((profile.lastName = lastName));
+											setForm(0);
+										})
+										.then(() => {
+											return PostProfile().then((res) => {
+												setProfile(res.body);
+											});
+										})
+										.catch((err) => {
+											console.log(err);
+										});
 								}}
 							>
 								Save
