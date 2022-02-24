@@ -59,20 +59,20 @@ function SignInt() {
 
 						<button
 							className="sign-in-button"
-							onClick={() => {
-								// console.log(rememberRef.current.checked);
+							onClick={(e) => {
+								e.preventDefault();
 								reqAuth(username, password)
 									.then((res) => {
-										dispatch({
+										return dispatch({
 											type: 'SIGNIN',
 											payload: {
 												token: res.body.token,
+												rememberRef: rememberRef.current.checked,
 											},
 										});
-										navigate('/User');
 									})
-									.catch((err) => {
-										console.log(err);
+									.then(() => {
+										navigate('/User');
 									});
 							}}
 						>

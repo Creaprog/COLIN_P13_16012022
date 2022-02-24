@@ -8,11 +8,14 @@ export function reqAuth(username, password) {
 			email: username,
 			password: password,
 		}),
-	}).then((res) => {
-		console.log(res);
-		if (res.ok === false) {
-			throw new Error('Invalid Credentials');
-		}
-		return res.json();
-	});
+	})
+		.then((res) => {
+			if (res.ok === false) {
+				throw new Error('Invalid Credentials');
+			}
+			return res.json();
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 }

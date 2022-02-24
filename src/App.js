@@ -10,8 +10,14 @@ function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<Home />} />
-			<Route path="/SignIn" element={<SignIn />} />
-			<Route path="/User" element={token ? <User /> : <SignIn />} />
+			<Route
+				path="/SignIn"
+				element={token === 'null' || token === null ? <SignIn /> : <User />}
+			/>
+			<Route
+				path="/User"
+				element={token === 'null' || token === null ? <SignIn /> : <User />}
+			/>
 		</Routes>
 	);
 }

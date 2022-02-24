@@ -22,12 +22,16 @@ function reducer(state = initialState, action) {
 		switch (action.type) {
 			case 'SIGNIN':
 				return produce(state, (draft) => {
-					localStorage.setItem('token', action.payload.token);
+					if (action.payload.rememberRef) {
+						localStorage.setItem('token', action.payload.token);
+					}
 					draft.token = action.payload.token;
 				});
 			case 'LOGOUT':
 				return produce(state, (draft) => {
-					localStorage.setItem('token', null);
+					if (draft.rememberRef) {
+						localStorage.removeItem('token');
+					}
 					draft.token = null;
 				});
 			default:

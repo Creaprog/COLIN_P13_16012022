@@ -186,7 +186,7 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-    post:
+    put:
       security:
         - Bearer: []
       tags:

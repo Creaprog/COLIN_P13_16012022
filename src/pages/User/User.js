@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { PostProfile, PutProfile } from '../../services/Profile';
 import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 
 function User() {
 	const dispatch = useDispatch();
@@ -9,16 +10,18 @@ function User() {
 	const [firstName, setfirstName] = useState('');
 	const [lastName, setlastName] = useState('');
 	const [form, setForm] = useState(0);
+	const token = useSelector((state) => state.token);
 
 	useEffect(() => {
-		PostProfile()
+		PostProfile(token)
 			.then((res) => {
 				setProfile(res.body);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-	}, []);
+	}, [token]);
+
 	return (
 		<>
 			<nav className="main-nav">
@@ -87,14 +90,14 @@ function User() {
 							<button
 								className="save-button"
 								onClick={() => {
-									return PutProfile(firstName, lastName)
+									return PutProfile(firstName, lastName, token)
 										.then(() => {
 											setProfile((profile.firstName = firstName));
 											setProfile((profile.lastName = lastName));
 											setForm(0);
 										})
 										.then(() => {
-											return PostProfile().then((res) => {
+											return PostProfile(token).then((res) => {
 												setProfile(res.body);
 											});
 										})
