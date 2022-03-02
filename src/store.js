@@ -1,21 +1,11 @@
 import { createStore } from 'redux';
 import produce from 'immer';
 
-//TODO : stocker les info user dans Redux store
 const initialState = {
 	token: localStorage.getItem('token') || null,
 	firstName: '',
 	lastName: '',
 };
-
-export const signIn = (token) => ({
-	type: 'SIGNIN',
-	payload: {
-		token: token,
-	},
-});
-
-export const logout = () => ({ type: 'LOGOUT' });
 
 function reducer(state = initialState, action) {
 	return produce(state, (draft) => {
@@ -33,6 +23,11 @@ function reducer(state = initialState, action) {
 						localStorage.removeItem('token');
 					}
 					draft.token = null;
+				});
+			case 'SET_NAME':
+				return produce(state, (draft) => {
+					draft.firstName = action.payload.firstName || draft.firstName;
+					draft.lastName = action.payload.lastName || draft.lastName;
 				});
 			default:
 				return draft;

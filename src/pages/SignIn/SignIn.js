@@ -34,7 +34,7 @@ function SignInt() {
 					<h1>Sign In</h1>
 					<form>
 						<div className="input-wrapper">
-							<label for="username">Username</label>
+							<label htmlFor="username">Username</label>
 							<input
 								type="text"
 								id="username"
@@ -43,7 +43,7 @@ function SignInt() {
 							/>
 						</div>
 						<div className="input-wrapper">
-							<label for="password">Password</label>
+							<label htmlFor="password">Password</label>
 							<input
 								type="password"
 								id="password"
@@ -53,7 +53,7 @@ function SignInt() {
 						</div>
 						<div className="input-remember">
 							<input type="checkbox" ref={rememberRef} id="remember-me" />
-							<label for="remember-me">Remember me</label>
+							<label htmlFor="remember-me">Remember me</label>
 						</div>
 						{/* PLACEHOLDER DUE TO STATIC SITE */}
 

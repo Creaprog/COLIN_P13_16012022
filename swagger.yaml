@@ -1,3 +1,5 @@
+# Mettre les retours en array
+# https://github.com/OpenClassrooms-Student-Center/Project-10-Bank-API/blob/master/designs/wireframes/transactions.png -> /transaction/{id}/details
 swagger: '2.0'
 info:
   title: Bank Argent API documentation
@@ -113,7 +115,7 @@ paths:
         '500':
           description: Internal Server Error
   /transaction/monthly:
-    post:
+    get:
       security:
         - Bearer: []
       tags:
@@ -289,14 +291,14 @@ definitions:
         type: string
       description:
         type: string
+      balance:
+        type: number
   Transaction:
     type: object
     properties:
       amount:
         type: number
       type:
-        type: string
-      date:
         type: string
       description:
         type: string

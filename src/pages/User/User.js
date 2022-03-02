@@ -1,26 +1,32 @@
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PostProfile, PutProfile } from '../../services/Profile';
 import { useState, useEffect } from 'react';
-import { useSelector } from 'react-redux';
+// import { setName } from '../../store';
+import { useRef } from 'react';
+import { setName } from '../../actionCreator';
+
+const firstNameSelector = (state) => state.firstName;
+const lastNameSelector = (state) => state.lastName;
 
 function User() {
 	const dispatch = useDispatch();
-	const [profile, setProfile] = useState('');
-	const [firstName, setfirstName] = useState('');
-	const [lastName, setlastName] = useState('');
+	const firstName = useSelector(firstNameSelector);
+	const lastName = useSelector(lastNameSelector);
 	const [form, setForm] = useState(0);
 	const token = useSelector((state) => state.token);
+	const lastNameRef = useRef(lastName);
+	const firstNameRef = useRef(firstName);
 
 	useEffect(() => {
 		PostProfile(token)
 			.then((res) => {
-				setProfile(res.body);
+				dispatch(setName(res.body.firstName, res.body.lastName));
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-	}, [token]);
+	}, [token, dispatch]);
 
 	return (
 		<>
@@ -54,7 +60,7 @@ function User() {
 					<h1>
 						Welcome back
 						<br />
-						{profile.firstName} {profile.lastName} !
+						{firstName} {lastName} !
 					</h1>
 					<button
 						style={{ display: form ? 'none' : 'initial' }}
@@ -68,42 +74,54 @@ function User() {
 					<div className="form" style={{ display: form ? 'block' : 'none' }}>
 						<div className="profile">
 							<input
+								ref={firstNameRef}
 								type="text"
-								placeholder={profile.firstName}
-								value={firstName}
+								placeholder={firstName}
+								// value={firstName}
+								defaultValue={firstName}
 								className="firstname"
-								onInput={(e) => {
-									setfirstName(e.target.value);
-								}}
+								// onInput={(e) => {
+								// 	dispatch(setName(e.target.value));
+								// }}
 							/>
 							<input
+								ref={lastNameRef}
 								type="text"
-								placeholder={profile.lastName}
-								value={lastName}
+								placeholder={lastName}
+								// value={lastName}
+								defaultValue={lastName}
 								className="lastname"
-								onInput={(e) => {
-									setlastName(e.target.value);
-								}}
+								// onInput={(e) => {
+								// 	dispatch(setName(undefined, e.target.value));
+								// }}
 							/>
 						</div>
 						<div className="actions">
 							<button
 								className="save-button"
 								onClick={() => {
-									return PutProfile(firstName, lastName, token)
-										.then(() => {
-											setProfile((profile.firstName = firstName));
-											setProfile((profile.lastName = lastName));
-											setForm(0);
-										})
-										.then(() => {
-											return PostProfile(token).then((res) => {
-												setProfile(res.body);
-											});
-										})
-										.catch((err) => {
-											console.log(err);
-										});
+									return (
+										PutProfile(
+											firstNameRef.current.value,
+											lastNameRef.current.value,
+											token
+										)
+											// .then(() => {
+											// 	dispatch(setName(firstName, lastName));
+											// 	setForm(0);
+											// })
+											.then(() => {
+												return PostProfile(token).then((res) => {
+													dispatch(
+														setName(res.body.firstName, res.body.lastName)
+													);
+													setForm(0);
+												});
+											})
+											.catch((err) => {
+												console.log(err);
+											})
+									);
 								}}
 							>
 								Save
