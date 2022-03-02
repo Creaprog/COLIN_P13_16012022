@@ -2,6 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useState, useRef } from 'react';
 import { reqAuth } from '../../services/auth';
+import { signIn } from '../../actionCreator';
 
 function SignInt() {
 	const [username, setUsername] = useState('');
@@ -63,13 +64,9 @@ function SignInt() {
 								e.preventDefault();
 								reqAuth(username, password)
 									.then((res) => {
-										return dispatch({
-											type: 'SIGNIN',
-											payload: {
-												token: res.body.token,
-												rememberRef: rememberRef.current.checked,
-											},
-										});
+										return dispatch(
+											signIn(res.body.token, rememberRef.current.checked)
+										);
 									})
 									.then(() => {
 										navigate('/User');

@@ -19,7 +19,7 @@ function reducer(state = initialState, action) {
 				});
 			case 'LOGOUT':
 				return produce(state, (draft) => {
-					if (draft.rememberRef) {
+					if (localStorage.getItem('token')) {
 						localStorage.removeItem('token');
 					}
 					draft.token = null;
