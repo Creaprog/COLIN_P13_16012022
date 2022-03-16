@@ -120,13 +120,6 @@ paths:
         - User Module
       summary: List of Transactions per month
       description: API for see the transactions
-      # parameters:
-      #   - in: body
-      #     name: body
-      #     description: Transaction monthly
-      #     required: true
-      #     schema:
-      #       $ref: '#/definitions/TransactionMontly'
       produces:
         - application/json
       responses:
@@ -138,38 +131,14 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
-  /transaction:
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: Create a transaction
-      description: API for create a transactions
-      parameters:
-        - in: body
-          name: body
-          description: Transaction Payload
-          required: true
-          schema:
-            $ref: '#/definitions/Transaction'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction created successully
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
   /transaction/{id}:
-    delete:
+    get:
       security:
         - Bearer: []
       tags:
         - User Module
-      summary: Delete a transaction
-      description: API for delete a transactions
+      summary: get one transaction
+      description: API for see one transaction
       parameters:
         - name: id
           in: path
@@ -181,48 +150,22 @@ paths:
         - application/json
       responses:
         '200':
-          description: Transaction deleted successully
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
-    put:
-      security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: Edit a transaction
-      description: API for update a transactions
-      parameters:
-        - name: id
-          in: path
-          description: ID
-          required: true
-          type: integer
-          format: int64
-        - in: body
-          name: body
-          description: Transaction Payload
-          required: true
+          description: List of transactions successully
           schema:
-            $ref: '#/definitions/Transaction'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction updated successully
+            $ref: '#/definitions/TransactionMontlyResponse'
         '400':
           description: Invalid Fields
         '500':
           description: Internal Server Error
+
   /transaction/{id}/details:
-    delete:
+    patch:
       security:
         - Bearer: []
       tags:
         - User Module
-      summary: Delete a transaction
-      description: API for delete a transactions
+      summary: Patch a transaction details
+      description: API for patch a transaction details
       parameters:
         - name: id
           in: path
@@ -235,58 +178,6 @@ paths:
       responses:
         '200':
           description: Transaction deleted successully
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
-    put:
-      security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: Edit a transaction
-      description: API for update a transactions
-      parameters:
-        - name: id
-          in: path
-          description: ID
-          required: true
-          type: integer
-          format: int64
-        - in: body
-          name: body
-          description: Transaction Payload
-          required: true
-          schema:
-            $ref: '#/definitions/Details'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction updated successully
-        '400':
-          description: Invalid Fields
-        '500':
-          description: Internal Server Error
-    post:
-      security:
-        - Bearer: []
-      tags:
-        - User Module
-      summary: Create a transaction
-      description: API for create a transactions
-      parameters:
-        - in: body
-          name: body
-          description: Transaction Payload
-          required: true
-          schema:
-            $ref: '#/definitions/Details'
-      produces:
-        - application/json
-      responses:
-        '200':
-          description: Transaction created successully
         '400':
           description: Invalid Fields
         '500':
@@ -346,28 +237,23 @@ definitions:
         type: string
       lastName:
         type: string
-  # TransactionMontly:
-  #   type: object
-  #   properties:
-  #     month:
-  #       type: number
-  #     year:
-  #       type: number
   TransactionMontlyResponse:
-    type: object
-    properties:
-      id:
-        type: number
-      amount:
-        type: number
-      type:
-        type: string
-      date:
-        type: string
-      description:
-        type: string
-      balance:
-        type: number
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: number
+        amount:
+          type: number
+        type:
+          type: string
+        date:
+          type: string
+        description:
+          type: string
+        balance:
+          type: number
   Transaction:
     type: object
     properties:
